@@ -28,10 +28,11 @@ conversation = Conversation(
 
 conversation.start_session()
 
-signal.signal(
-    signal.SIGINT,
-    lambda sig, frame: conversation.end_session()
-)
+def stop_vox(sig, frame):
+    print("\nStopping Vox...")
+    conversation.end_session()
+
+signal.signal(signal.SIGINT, stop_vox)
 
 conversation_id = conversation.wait_for_session_end()
 
