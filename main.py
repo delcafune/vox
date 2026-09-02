@@ -1,12 +1,18 @@
 import os
 import signal
+import webbrowser
 
 from dotenv import load_dotenv
 from elevenlabs.client import ElevenLabs
-from elevenlabs.conversational_ai.conversation import Conversation
+from elevenlabs.conversational_ai.conversation import Conversation, ClientTools
 from elevenlabs.conversational_ai.default_audio_interface import DefaultAudioInterface
 
 
+def open_website(parameters):
+    url = parameters.get("url")
+    if url:
+        webbrowser.open(url)
+        
 load_dotenv()
 
 agent_id = os.getenv("AGENT_ID")
@@ -17,11 +23,15 @@ if not agent_id or not api_key:
 
 elevenlabs = ElevenLabs(api_key=api_key)
 
+client_tools = ClientTools()
+client_tools.register("openWebsite", open_website)
+
 conversation = Conversation(
     elevenlabs,
     agent_id,
     requires_auth=True,
     audio_interface=DefaultAudioInterface(),
+    client_tools=client_tools,
     callback_agent_response=lambda response: print(f"Vox: {response}"),
     callback_user_transcript=lambda transcript: print(f"You: {transcript}"),
 )
