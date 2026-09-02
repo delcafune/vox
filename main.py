@@ -64,11 +64,26 @@ conversation = Conversation(
 )
 
 if TEST_MODE:
-    print("Vox is running in TEST MODE")
+    print("\nVox TEST MODE")
+    print("1. Open website")
+    print("2. Open app")
+    print("3. Exit")
 
-    app = input("App to open: ").lower()
+    choice = input("\nChoose: ")
 
-    open_app({"app": app})
+    if choice == "1":
+        site = input("Website to open: ")
+        open_website({"url": site})
+
+    elif choice == "2":
+        app = input("App to open: ").lower()
+        open_app({"app": app})
+
+    elif choice == "3":
+        print("Exiting Vox test mode")
+
+    else:
+        print("Invalid choice")
 
     raise SystemExit
 
