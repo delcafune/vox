@@ -15,6 +15,9 @@ def open_website(parameters):
         return
 
     if not url.startswith(("https://", "https://")):
+        if "." not in url:
+            url = url + ".com"
+
         url = "https://" + url
 
     webbrowser.open(url)
