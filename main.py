@@ -10,8 +10,14 @@ from elevenlabs.conversational_ai.default_audio_interface import DefaultAudioInt
 
 def open_website(parameters):
     url = parameters.get("url")
-    if url:
-        webbrowser.open(url)
+
+    if not url:
+        return
+
+    if not url.startswith(("https://", "https://")):
+        url = "https://" + url
+
+    webbrowser.open(url)
 
 
 TEST_MODE = True
@@ -44,8 +50,8 @@ if TEST_MODE:
 
     site = input("Website to open: ")
 
-    open_website({"url": f"https://www.{site}.com"})
-    
+    open_website({"url": site})
+
     raise SystemExit
 
 conversation.start_session()
