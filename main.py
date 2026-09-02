@@ -12,7 +12,10 @@ def open_website(parameters):
     url = parameters.get("url")
     if url:
         webbrowser.open(url)
-        
+
+
+TEST_MODE = True
+
 load_dotenv()
 
 agent_id = os.getenv("AGENT_ID")
@@ -35,6 +38,11 @@ conversation = Conversation(
     callback_agent_response=lambda response: print(f"Vox: {response}"),
     callback_user_transcript=lambda transcript: print(f"You: {transcript}"),
 )
+
+if TEST_MODE:
+    print("Vox is running in TEST MODE")
+    open_website({"url": "https://www.google.com"})
+    raise SystemExit
 
 conversation.start_session()
 
