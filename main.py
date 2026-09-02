@@ -41,7 +41,11 @@ conversation = Conversation(
 
 if TEST_MODE:
     print("Vox is running in TEST MODE")
-    open_website({"url": "https://www.google.com"})
+
+    site = input("Website to open: ")
+
+    open_website({"url": f"https://www.{site}.com"})
+    
     raise SystemExit
 
 conversation.start_session()
