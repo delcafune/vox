@@ -2,6 +2,7 @@ import os
 import signal
 import webbrowser
 import subprocess
+from datetime import datetime
 
 from dotenv import load_dotenv
 from elevenlabs.client import ElevenLabs
@@ -38,6 +39,14 @@ def open_app(parameters):
 
     subprocess.run(["open", "-a", allowed_apps[app_name]])
 
+def get_current_time(parameters):
+    now = datetime.now()
+
+    current_time = now.strftime("%I:%M %p")
+    current_date = now.strftime("%A, %B %d, %Y")
+
+    return f"It is {current_time} on {current_date}."
+
 TEST_MODE = True
 
 load_dotenv()
@@ -67,7 +76,8 @@ if TEST_MODE:
     print("\nVox TEST MODE")
     print("1. Open website")
     print("2. Open app")
-    print("3. Exit")
+    print("3. Get current time")
+    print("4. Exit")
 
     choice = input("\nChoose: ")
 
@@ -80,6 +90,9 @@ if TEST_MODE:
         open_app({"app": app})
 
     elif choice == "3":
+        print(get_current_time({}))
+
+    elif choice == "4":
         print("Exiting Vox test mode")
 
     else:
