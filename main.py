@@ -16,7 +16,7 @@ def open_website(parameters):
     if not url:
         return
 
-    if not url.startswith(("https://", "https://")):
+    if not url.startswith(("http://", "https://")):
         if "." not in url:
             url = url + ".com"
 
@@ -47,8 +47,6 @@ def get_current_time(parameters):
 
     return f"It is {current_time} on {current_date}."
 
-TEST_MODE = True
-
 load_dotenv()
 
 agent_id = os.getenv("AGENT_ID")
@@ -61,6 +59,8 @@ elevenlabs = ElevenLabs(api_key=api_key)
 
 client_tools = ClientTools()
 client_tools.register("openWebsite", open_website)
+client_tools.register("openApp", open_app)
+client_tools.register("getCurrentTime", get_current_time)
 
 conversation = Conversation(
     elevenlabs,
@@ -71,34 +71,6 @@ conversation = Conversation(
     callback_agent_response=lambda response: print(f"Vox: {response}"),
     callback_user_transcript=lambda transcript: print(f"You: {transcript}"),
 )
-
-if TEST_MODE:
-    print("\nVox TEST MODE")
-    print("1. Open website")
-    print("2. Open app")
-    print("3. Get current time")
-    print("4. Exit")
-
-    choice = input("\nChoose: ")
-
-    if choice == "1":
-        site = input("Website to open: ")
-        open_website({"url": site})
-
-    elif choice == "2":
-        app = input("App to open: ").lower()
-        open_app({"app": app})
-
-    elif choice == "3":
-        print(get_current_time({}))
-
-    elif choice == "4":
-        print("Exiting Vox test mode")
-
-    else:
-        print("Invalid choice")
-
-    raise SystemExit
 
 conversation.start_session()
 
