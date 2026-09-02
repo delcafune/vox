@@ -1,6 +1,7 @@
 import os
 import signal
 import webbrowser
+import subprocess
 
 from dotenv import load_dotenv
 from elevenlabs.client import ElevenLabs
@@ -22,6 +23,20 @@ def open_website(parameters):
 
     webbrowser.open(url)
 
+def open_app(parameters):
+    app_name = parameters.get("app")
+
+    allowed_apps = {
+        "calculator": "Calculator",
+        "notes": "Notes",
+        "spotify": "Spotify",
+    }
+
+    if app_name not in allowed_apps:
+        print("App not allowed.")
+        return
+
+    subprocess.run(["open", "-a", allowed_apps[app_name]])
 
 TEST_MODE = True
 
@@ -51,9 +66,9 @@ conversation = Conversation(
 if TEST_MODE:
     print("Vox is running in TEST MODE")
 
-    site = input("Website to open: ")
+    app = input("App to open: ").lower()
 
-    open_website({"url": site})
+    open_app({"app": app})
 
     raise SystemExit
 
